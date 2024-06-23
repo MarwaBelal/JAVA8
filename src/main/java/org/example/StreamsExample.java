@@ -76,7 +76,28 @@ public class StreamsExample {
         });
 
         banner("Average price for all books in the library");
-        // TODO With functional interfaces declared
+        // Solved With functional interfaces declared
+        Consumer<List<Book>> averagePriceForAllBooks = new Consumer<List<Book>>() {
+            @Override
+            public void accept(List<Book> books) {
+                double totalPrice = 0.0;
+                int booksLength = books.size();
+                if (booksLength > 0) {
+                    for (Book book : books) {
+                        totalPrice += book.getPrice();
+                    }
+                    double avgPrice = totalPrice / booksLength;
+                    System.out.println("The average price is: " + avgPrice);
+                } else {
+                    System.out.println("The Books Length is 0! ");
+                }
+
+            }
+        };
+        ((Consumer<List<Book>>) averagePriceForAllBooks).accept(
+                authors.stream()
+                        .flatMap(author -> author.getBooks().stream())
+                        .collect(Collectors.toList()));
 
         banner("Average price for all books in the library - lambda");
         // Solved With functional interfaces used directly
